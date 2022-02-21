@@ -16,7 +16,6 @@ import (
 
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
 }
 
 func handleRequests() {
@@ -38,10 +37,17 @@ type Book struct {
 	Content string `json:"content"`
 }
 
+type JsonResponse struct {
+	Type    string `json:"type"`
+	Data    []Book `json:"data"`
+	Message string `json:"message"`
+}
+
 var (
-	Books []Book
-	db    *sql.DB
-	err   error
+	Books    []Book
+	db       *sql.DB
+	err      error
+	response JsonResponse
 )
 
 func main() {
@@ -50,6 +56,7 @@ func main() {
 	dbPassword := os.Getenv("DB_PASSWORD")
 	connection := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/books", dbUsername, dbPassword)
 	db, err = sql.Open("mysql", connection)
+
 	if err != nil {
 		panic(err.Error())
 	}
@@ -75,7 +82,6 @@ func returnAllBooks(w http.ResponseWriter, r *http.Request) {
 		}
 		Books = append(Books, book)
 	}
-	fmt.Println("Endpoint Hit: returnAllBooks")
 	json.NewEncoder(w).Encode(Books)
 }
 
@@ -107,8 +113,8 @@ func createNewBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-
-	fmt.Fprintf(w, "New Book was created")
+	response = JsonResponse{Type: "sucess", Data: []Book{newBook}, Message: "The book was successfully created"}
+	json.NewEncoder(w).Encode(response)
 }
 
 func deleteBook(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +123,8 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Fprintf(w, "Book was deleted")
+	response = JsonResponse{Type: "success", Message: "The book has been deleted successfully!"}
+	json.NewEncoder(w).Encode(response)
 }
 
 func updateBook(w http.ResponseWriter, r *http.Request) {
@@ -127,5 +134,6 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &book)
 
 	db.Exec("UPDATE books set author=?, title=?, content=? where id=?", book.Title, book.Author, book.Content, id)
-
+	response = JsonResponse{Type: "success", Data: []Book{book}, Message: "The book was successfully updated"}
+	json.NewEncoder(w).Encode(response)
 }
