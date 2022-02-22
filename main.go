@@ -1,22 +1,21 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 
+	"github.com/m-rcd/go-rest-api/database"
 	"github.com/m-rcd/go-rest-api/handler"
 	"github.com/m-rcd/go-rest-api/models"
 
 	"github.com/gorilla/mux"
 )
 
-func handleRequests(db *sql.DB) {
-	h = h.New(db)
+func handleRequests(db database.Database) {
+	h = handler.New(db)
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/", h.HomePage)
 	myRouter.HandleFunc("/books", h.ReturnAllBooks)
@@ -30,18 +29,15 @@ func handleRequests(db *sql.DB) {
 
 var (
 	Books []models.Book
-	db    *sql.DB
+	db    database.Database
 	err   error
 	h     handler.Handler
 )
 
 func main() {
 	fmt.Println("Listening on port 10000")
-	dbUsername := os.Getenv("DB_USERNAME")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	connection := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/books", dbUsername, dbPassword)
-	db, err = sql.Open("mysql", connection)
-
+	db = database.NewSQL()
+	db.Open()
 	if err != nil {
 		fmt.Println(err)
 	}
