@@ -5,8 +5,8 @@ import (
 	"io"
 	"sync"
 
-	"github.com/m-rcd/go-rest-api/database"
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/database"
+	"github.com/m-rcd/booksy/models"
 )
 
 type FakeDatabase struct {

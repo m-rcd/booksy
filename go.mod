@@ -1,4 +1,4 @@
-module github.com/m-rcd/go-rest-api
+module github.com/m-rcd/booksy
 
 go 1.17
 

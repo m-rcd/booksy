@@ -7,8 +7,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	"github.com/m-rcd/go-rest-api/database"
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/database"
+	"github.com/m-rcd/booksy/models"
 )
 
 type Handler struct {

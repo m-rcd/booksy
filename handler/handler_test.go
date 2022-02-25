@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/m-rcd/go-rest-api/database/databasefakes"
-	"github.com/m-rcd/go-rest-api/handler"
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/database/databasefakes"
+	"github.com/m-rcd/booksy/handler"
+	"github.com/m-rcd/booksy/models"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -191,7 +191,6 @@ var _ = Describe("Handler", func() {
 			Expect(jsonResponse.StatusCode).To(Equal(500))
 			Expect(len(jsonResponse.Data)).To(Equal(0))
 			Expect(jsonResponse.Message).To(Equal("Error while deleting"))
-
 		})
 	})
 
@@ -217,7 +216,7 @@ var _ = Describe("Handler", func() {
 			Expect(jsonResponse.Data[0].Title).To(Equal("hello"))
 			Expect(jsonResponse.Data[0].Author).To(Equal("writer"))
 			Expect(jsonResponse.Data[0].Content).To(Equal("iexist"))
-			Expect(jsonResponse.Message).To(Equal("The book was successfully created"))
+			Expect(jsonResponse.Message).To(Equal("The book was successfully updated"))
 		})
 
 		It("returns error when UpdateBook request fails", func() {

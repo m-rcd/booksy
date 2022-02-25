@@ -1,4 +1,4 @@
-# go-rest-api  WIP
+# Booksy WIP
 
 A simple REST API that creates, updates, lists, gets and deletes a book. 
 
@@ -14,9 +14,9 @@ A simple REST API that creates, updates, lists, gets and deletes a book.
 
 ```
 git clone <this or your fork>
-cd go-rest-api
+cd booksy
 go build
-./go-rest-api
+./booksy
 ```
 
 # Usage

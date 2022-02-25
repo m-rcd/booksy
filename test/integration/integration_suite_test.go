@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"github.com/m-rcd/go-rest-api/database"
+	"github.com/m-rcd/booksy/database"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -25,7 +25,7 @@ func TestIntegration(t *testing.T) {
 		var cliBin string
 		err = godotenv.Load("./../../.env")
 		Expect(err).NotTo(HaveOccurred())
-		cliBin, err = gexec.Build("github.com/m-rcd/go-rest-api")
+		cliBin, err = gexec.Build("github.com/m-rcd/booksy")
 		Expect(err).NotTo(HaveOccurred())
 		command := exec.Command(cliBin)
 		session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)

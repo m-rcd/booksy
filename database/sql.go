@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/models"
 )
 
 type SqlDB struct {

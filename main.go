@@ -7,9 +7,9 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/m-rcd/go-rest-api/database"
-	"github.com/m-rcd/go-rest-api/handler"
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/database"
+	"github.com/m-rcd/booksy/handler"
+	"github.com/m-rcd/booksy/models"
 
 	"github.com/gorilla/mux"
 )

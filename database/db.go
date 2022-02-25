@@ -3,7 +3,7 @@ package database
 import (
 	"io"
 
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/models"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate

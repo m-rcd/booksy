@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/m-rcd/go-rest-api/models"
+	"github.com/m-rcd/booksy/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -102,6 +102,5 @@ var _ = Describe("Integration", func() {
 		Expect(response.Type).To(Equal("success"))
 		Expect(response.StatusCode).To(Equal(200))
 		Expect(response.Message).To(Equal("The book was successfully deleted"))
-
 	})
 })
