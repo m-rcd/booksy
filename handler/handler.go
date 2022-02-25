@@ -31,7 +31,7 @@ func (h *Handler) ReturnSingleBook(w http.ResponseWriter, r *http.Request) {
 	book, err := h.db.Get(id)
 
 	if err != nil {
-		response = bookResponse.FailedResponse(err.Error())
+		response = bookResponse.Failure(err.Error())
 		json.NewEncoder(w).Encode(response)
 	} else {
 		json.NewEncoder(w).Encode(book)
@@ -42,9 +42,9 @@ func (h *Handler) ReturnSingleBook(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) CreateNewBook(w http.ResponseWriter, r *http.Request) {
 	newBook, err := h.db.Create(r.Body)
 	if err != nil {
-		response = bookResponse.FailedResponse(err.Error())
+		response = bookResponse.Failure(err.Error())
 	} else {
-		response = bookResponse.SuccessResponse([]models.Book{newBook}, "The book was successfully created")
+		response = bookResponse.Success([]models.Book{newBook}, "The book was successfully created")
 	}
 	json.NewEncoder(w).Encode(response)
 }
@@ -53,9 +53,9 @@ func (h *Handler) UpdateBook(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	book, err := h.db.Update(id, r.Body)
 	if err != nil {
-		response = bookResponse.FailedResponse(err.Error())
+		response = bookResponse.Failure(err.Error())
 	} else {
-		response = bookResponse.SuccessResponse([]models.Book{book}, "The book was successfully updated")
+		response = bookResponse.Success([]models.Book{book}, "The book was successfully updated")
 	}
 
 	json.NewEncoder(w).Encode(response)
@@ -66,7 +66,7 @@ func (h *Handler) ReturnAllBooks(w http.ResponseWriter, r *http.Request) {
 	books, err := h.db.List()
 
 	if err != nil {
-		response = bookResponse.FailedResponse(err.Error())
+		response = bookResponse.Failure(err.Error())
 		json.NewEncoder(w).Encode(response)
 	} else {
 		json.NewEncoder(w).Encode(books)
@@ -79,9 +79,9 @@ func (h *Handler) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	err := h.db.Delete(id)
 
 	if err != nil {
-		response = bookResponse.FailedResponse(err.Error())
+		response = bookResponse.Failure(err.Error())
 	} else {
-		response = bookResponse.SuccessResponse([]models.Book{}, "The book was successfully deleted")
+		response = bookResponse.Success([]models.Book{}, "The book was successfully deleted")
 	}
 
 	json.NewEncoder(w).Encode(response)
