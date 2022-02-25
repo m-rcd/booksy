@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"os"
 
 	"github.com/m-rcd/booksy/models"
 )
@@ -20,10 +19,7 @@ func NewSQL() *SqlDB {
 }
 
 func (d *SqlDB) Open() error {
-	dbUsername := os.Getenv("DB_USERNAME")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	connection := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/books", dbUsername, dbPassword)
-	db, err := sql.Open("mysql", connection)
+	db, err := sql.Open("mysql", connString)
 
 	if err != nil {
 		return err

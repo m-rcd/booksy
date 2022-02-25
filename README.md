@@ -16,7 +16,7 @@ A simple REST API that creates, updates, lists, gets and deletes a book.
 git clone <this or your fork>
 cd booksy
 go build
-./booksy
+DB_USERNAME=<DB_USERNAME> DB_PASSWORD=<DB_PASSWORD> ./booksy
 ```
 
 # Usage
@@ -32,6 +32,8 @@ CREATE TABLE books (
     PRIMARY KEY     (id)  
     );
 ```
+
+env variables `DB_USERNAME` and `DB_PASSWORD` should be set in `.env`
 
 To **create** a book 
 
@@ -76,7 +78,5 @@ Run `ginkgo -r`
 - Add test_database
 
 - Create a database
-
-- Add config for database info
 
 - Refactor Handler
