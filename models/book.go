@@ -7,9 +7,9 @@ type Book struct {
 	Content string `json:"content"`
 }
 
-type JsonBookResponse struct {
-	Type       string `json:"type"`
-	StatusCode int    `json:status_code`
-	Data       []Book `json:"data"`
-	Message    string `json:"message"`
-}
+// type JsonBookResponse struct {
+// 	Type       string `json:"type"`
+// 	StatusCode int    `json:status_code`
+// 	Data       []Book `json:"data"`
+// 	Message    string `json:"message"`
+// }

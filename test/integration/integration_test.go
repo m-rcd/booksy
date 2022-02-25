@@ -7,9 +7,12 @@ import (
 	"net/http"
 
 	"github.com/m-rcd/booksy/models"
+	"github.com/m-rcd/booksy/pkg/responses"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
+
+var response responses.JsonBookResponse
 
 var _ = Describe("Integration", func() {
 	It("homepage", func() {
@@ -19,7 +22,7 @@ var _ = Describe("Integration", func() {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
 		Expect(err).NotTo(HaveOccurred())
-		Eventually(body).Should(ContainSubstring("Welcome to the HomePage!"))
+		Eventually(body).Should(ContainSubstring("Welcome to Booksy!"))
 	})
 
 	It("creates new book", func() {
@@ -30,7 +33,6 @@ var _ = Describe("Integration", func() {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
 		Expect(err).NotTo(HaveOccurred())
-		var response models.JsonBookResponse
 		json.Unmarshal(body, &response)
 
 		Expect(response.Type).To(Equal("success"))
@@ -79,7 +81,7 @@ var _ = Describe("Integration", func() {
 		body, err := ioutil.ReadAll(resp.Body)
 		Expect(err).NotTo(HaveOccurred())
 		defer req.Body.Close()
-		var response models.JsonBookResponse
+
 		json.Unmarshal(body, &response)
 		Expect(response.Type).To(Equal("success"))
 		Expect(response.StatusCode).To(Equal(200))
@@ -97,7 +99,6 @@ var _ = Describe("Integration", func() {
 		Expect(err).NotTo(HaveOccurred())
 		defer resp.Body.Close()
 		Expect(err).NotTo(HaveOccurred())
-		var response models.JsonBookResponse
 		json.Unmarshal(body, &response)
 		Expect(response.Type).To(Equal("success"))
 		Expect(response.StatusCode).To(Equal(200))

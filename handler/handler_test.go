@@ -10,33 +10,35 @@ import (
 	"github.com/m-rcd/booksy/database/databasefakes"
 	"github.com/m-rcd/booksy/handler"
 	"github.com/m-rcd/booksy/models"
+	"github.com/m-rcd/booksy/pkg/responses"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
+
+var jsonResponse responses.JsonBookResponse
 
 var _ = Describe("Handler", func() {
 	Context("POST request", func() {
 		It("handles CreateNewBook request", func() {
 			fake_db := new(databasefakes.FakeDatabase)
 
-			data := bytes.NewBuffer([]byte(`{"title":"hello", "author": "writer", "content":"iexist"}`))
+			data := bytes.NewBuffer([]byte(`{"title":"Northern lights", "author": "Philip Pullman", "content":"iexist"}`))
 			req, err := http.NewRequest("POST", "http://localhost:10000/book", data)
 			Expect(err).NotTo(HaveOccurred())
 			rr := httptest.NewRecorder()
 			h := handler.New(fake_db)
 
-			book := models.Book{Title: "hello", Author: "writer", Content: "iexist"}
+			book := models.Book{Title: "Northern lights", Author: "Philip Pullman", Content: "iexist"}
 			fake_db.CreateReturns(book, nil)
 			h.CreateNewBook(rr, req)
 			Expect(fake_db.CreateCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("success"))
 			Expect(jsonResponse.StatusCode).To(Equal(200))
-			Expect(jsonResponse.Data[0].Title).To(Equal("hello"))
-			Expect(jsonResponse.Data[0].Author).To(Equal("writer"))
+			Expect(jsonResponse.Data[0].Title).To(Equal("Northern lights"))
+			Expect(jsonResponse.Data[0].Author).To(Equal("Philip Pullman"))
 			Expect(jsonResponse.Data[0].Content).To(Equal("iexist"))
 			Expect(jsonResponse.Message).To(Equal("The book was successfully created"))
 		})
@@ -55,7 +57,6 @@ var _ = Describe("Handler", func() {
 			h.CreateNewBook(rr, req)
 			Expect(fake_db.CreateCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("failed"))
 			Expect(jsonResponse.StatusCode).To(Equal(500))
@@ -72,7 +73,7 @@ var _ = Describe("Handler", func() {
 			Expect(err).NotTo(HaveOccurred())
 			rr := httptest.NewRecorder()
 			h := handler.New(fake_db)
-			book := models.Book{ID: "1", Title: "hello", Author: "writer", Content: "iexist"}
+			book := models.Book{ID: "1", Title: "The subtle knife", Author: "Philip Pullman", Content: "iexist"}
 
 			fake_db.GetReturns(book, nil)
 			h.ReturnSingleBook(rr, req)
@@ -98,7 +99,6 @@ var _ = Describe("Handler", func() {
 			h.ReturnSingleBook(rr, req)
 			Expect(fake_db.GetCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("failed"))
 			Expect(jsonResponse.StatusCode).To(Equal(500))
@@ -143,7 +143,6 @@ var _ = Describe("Handler", func() {
 			h.ReturnAllBooks(rr, req)
 			Expect(fake_db.ListCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("failed"))
 			Expect(jsonResponse.StatusCode).To(Equal(500))
@@ -165,7 +164,6 @@ var _ = Describe("Handler", func() {
 			h.DeleteBook(rr, req)
 			Expect(fake_db.DeleteCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("success"))
 			Expect(jsonResponse.StatusCode).To(Equal(200))
@@ -185,7 +183,6 @@ var _ = Describe("Handler", func() {
 			h.DeleteBook(rr, req)
 			Expect(fake_db.DeleteCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("failed"))
 			Expect(jsonResponse.StatusCode).To(Equal(500))
@@ -209,7 +206,6 @@ var _ = Describe("Handler", func() {
 			h.UpdateBook(rr, req)
 			Expect(fake_db.UpdateCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("success"))
 			Expect(jsonResponse.StatusCode).To(Equal(200))
@@ -233,7 +229,6 @@ var _ = Describe("Handler", func() {
 			h.UpdateBook(rr, req)
 			Expect(fake_db.UpdateCallCount()).To(Equal(1))
 
-			var jsonResponse models.JsonBookResponse
 			json.Unmarshal(rr.Body.Bytes(), &jsonResponse)
 			Expect(jsonResponse.Type).To(Equal("failed"))
 			Expect(jsonResponse.StatusCode).To(Equal(500))

@@ -14,6 +14,8 @@ type SqlDB struct {
 	db *sql.DB
 }
 
+var book models.Book
+
 func NewSQL() *SqlDB {
 	return &SqlDB{}
 }
@@ -39,20 +41,18 @@ func (d *SqlDB) Create(body io.ReadCloser) (models.Book, error) {
 	}
 
 	reqBody, _ := ioutil.ReadAll(body)
-	var newBook models.Book
-	json.Unmarshal(reqBody, &newBook)
+	json.Unmarshal(reqBody, &book)
 
-	_, err = stmt.Exec(newBook.Title, newBook.Author, newBook.Content)
+	_, err = stmt.Exec(book.Title, book.Author, book.Content)
 	if err != nil {
 		return models.Book{}, err
 	}
 
-	return newBook, nil
+	return book, nil
 }
 
 func (d *SqlDB) Get(id string) (models.Book, error) {
 	result := d.db.QueryRow("SELECT * FROM books WHERE id = ?", id)
-	var book models.Book
 	result.Scan(&book.ID, &book.Title, &book.Author, &book.Content)
 
 	return book, nil
@@ -68,10 +68,9 @@ func (d *SqlDB) List() ([]models.Book, error) {
 	var books []models.Book
 
 	for result.Next() {
-		var book models.Book
 		err := result.Scan(&book.ID, &book.Title, &book.Author, &book.Content)
 		if err != nil {
-			panic(err.Error())
+			return []models.Book{}, err
 		}
 		books = append(books, book)
 	}
@@ -81,14 +80,13 @@ func (d *SqlDB) List() ([]models.Book, error) {
 func (d *SqlDB) Delete(id string) error {
 	_, err := d.db.Query("DELETE FROM books WHERE id = ?", id)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	return nil
 }
 
 func (d *SqlDB) Update(id string, body io.ReadCloser) (models.Book, error) {
 	reqBody, _ := ioutil.ReadAll(body)
-	var book models.Book
 	json.Unmarshal(reqBody, &book)
 
 	_, err := d.db.Exec("UPDATE books set author=?, title=?, content=? where id=?", book.Title, book.Author, book.Content, id)
