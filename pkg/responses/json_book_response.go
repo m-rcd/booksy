@@ -1,6 +1,6 @@
 package responses
 
-import "github.com/m-rcd/booksy/models"
+import "github.com/m-rcd/booksy/pkg/models"
 
 type JsonBookResponse struct {
 	Type       string        `json:"type"`

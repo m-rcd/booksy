@@ -21,17 +21,7 @@ DB_USERNAME=<DB_USERNAME> DB_PASSWORD=<DB_PASSWORD> ./booksy
 
 # Usage
 
-Database `books` should exist locally.
-A table called books should exist locally as well
-```sql
-CREATE TABLE books (
-    id INT unsigned NOT NULL AUTO_INCREMENT, 
-    title VARCHAR(150) NOT NULL, 
-    author VARCHAR(150) NOT NULL, 
-    content VARCHAR(150) NOT NULL, 
-    PRIMARY KEY     (id)  
-    );
-```
+Database `bookshop` should exist locally.
 
 env variables `DB_USERNAME` and `DB_PASSWORD` should be set in `.env`
 
